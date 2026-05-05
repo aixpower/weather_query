@@ -27,7 +27,7 @@ A weather query program based on Amap Open Platform API, supporting both command
 ## ✨ Features
 
 - 🌍 Support for Chinese and English city names
-- 📅 Get 7-day weather forecasts
+- 📅 Get weather forecasts (Amap free API returns 4 days)
 - 🌡️ Display weather conditions, temperature, wind direction and force
 - 🛡️ Comprehensive exception handling
 - 🔄 Support for cyclic queries
@@ -190,8 +190,9 @@ This project uses two APIs from Amap Open Platform:
 - **Request Parameters**:
   - `key`: API key
   - `city`: City adcode
-  - `extensions`: Forecast type (`all` for 7-day forecast)
+  - `extensions`: Forecast type (`all` for multi-day forecast, free API returns 4 days)
   - `output`: Output format (`json`)
+- **Note**: Amap free API returns 4 days of forecast data, paid API may return more
 
 ### 2. Geocoding API
 
@@ -270,7 +271,7 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
+The above copyright notice and permission notice shall be included in all
 copies or substantial portions of the Software.
 ```
 
@@ -291,7 +292,7 @@ copies or substantial portions of the Software.
 
 - ✅ Implemented core weather query functionality
 - ✅ Support for Chinese and English city names
-- ✅ 7-day weather forecast retrieval
+- ✅ Weather forecast retrieval (Amap API returns 4 days)
 - ✅ Command Line Interface (CLI)
 - ✅ Graphical User Interface (GUI)
 - ✅ Comprehensive exception handling mechanism
@@ -299,13 +300,9 @@ copies or substantial portions of the Software.
 - ✅ Environment variable configuration support
 - ✅ Pre-configured popular city list
 
-#### Fixed
+#### Documentation Update
 
-- None
-
-#### Improved
-
-- None
+- ✅ Updated documentation to reflect that Amap API actually returns 4 days instead of 7
 
 ---
 
@@ -315,6 +312,7 @@ copies or substantial portions of the Software.
 2. API calls have traffic limits, please do not call frequently
 3. Weather data is updated 3 times a day (around 8:00, 11:00, 18:00)
 4. If you encounter API rate limiting, please try again later
+5. Amap free API returns 4 days of weather forecast data
 
 ## 🔒 Security Notes
 

@@ -1,4 +1,3 @@
-
 import requests
 from config import AMAP_API_KEY, AMAP_WEATHER_URL, AMAP_GEOCODE_URL, CITY_ADCODE_MAP
 
@@ -97,7 +96,7 @@ def get_weather_forecast(city_name):
 def parse_weather_data(data):
     """
     Parse weather forecast data from Amap API.
-    Ensures all available days (typically 7 days) are preserved.
+    Ensures all available days (free API returns 4 days) are preserved.
     
     Args:
         data: Raw JSON data from Amap weather API
@@ -125,7 +124,7 @@ def parse_weather_data(data):
     }
     
     # Parse ALL available days - no slicing, no truncation
-    # Amap API typically returns 7 days of forecast data
+    # Amap free API returns 4 days, paid API may return more
     for cast in casts:
         result["forecasts"].append({
             "date": cast.get("date", ""),
@@ -146,7 +145,7 @@ def parse_weather_data(data):
 def format_weather_display(weather_data):
     """
     Format weather data for display in CLI and GUI.
-    Shows ALL available forecast days (typically 7 days).
+    Shows ALL available forecast days (free API returns 4 days).
     
     Args:
         weather_data: Parsed weather data dictionary
