@@ -95,6 +95,19 @@ def get_weather_forecast(city_name):
 
 
 def parse_weather_data(data):
+    """
+    Parse weather forecast data from Amap API.
+    Ensures all available days (typically 7 days) are preserved.
+    
+    Args:
+        data: Raw JSON data from Amap weather API
+        
+    Returns:
+        Dictionary with parsed weather data containing all forecast days
+        
+    Raises:
+        WeatherAPIError: If data format is invalid
+    """
     if not data or "forecasts" not in data or not data["forecasts"]:
         raise WeatherAPIError("Invalid data format")
     
@@ -111,6 +124,8 @@ def parse_weather_data(data):
         "forecasts": []
     }
     
+    # Parse ALL available days - no slicing, no truncation
+    # Amap API typically returns 7 days of forecast data
     for cast in casts:
         result["forecasts"].append({
             "date": cast.get("date", ""),
@@ -129,6 +144,16 @@ def parse_weather_data(data):
 
 
 def format_weather_display(weather_data):
+    """
+    Format weather data for display in CLI and GUI.
+    Shows ALL available forecast days (typically 7 days).
+    
+    Args:
+        weather_data: Parsed weather data dictionary
+        
+    Returns:
+        Formatted string with complete weather forecast
+    """
     if not weather_data:
         return ""
     
@@ -136,11 +161,14 @@ def format_weather_display(weather_data):
     lines.append("=" * 60)
     lines.append(weather_data["province"] + " " + weather_data["city"] + " Weather Forecast")
     lines.append("Report Time: " + weather_data["report_time"])
+    num_days = len(weather_data["forecasts"])
+    lines.append(f"Total Days: {num_days}")
     lines.append("=" * 60)
     
     week_map = {"1": "Monday", "2": "Tuesday", "3": "Wednesday", "4": "Thursday", 
                 "5": "Friday", "6": "Saturday", "7": "Sunday"}
     
+    # Display ALL forecast days - no truncation
     for idx, forecast in enumerate(weather_data["forecasts"], 1):
         week = week_map.get(forecast["week"], forecast["week"])
         lines.append("")

@@ -18,7 +18,7 @@ class WeatherApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Amap Weather Query System")
-        self.root.geometry("700x600")
+        self.root.geometry("700x800")  # Increased height to show all 7 days
         self.root.resizable(True, True)
         
         self.setup_ui()

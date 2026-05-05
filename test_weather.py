@@ -62,6 +62,76 @@ class TestWeatherAPI(unittest.TestCase):
         self.assertEqual(len(result["forecasts"]), 1)
         self.assertEqual(result["forecasts"][0]["day_temp"], "10")
     
+    def test_parse_weather_data_7_days(self):
+        """Test that parser correctly handles 7-day forecast data"""
+        # Create mock data with 7 days
+        casts = []
+        for i in range(1, 8):
+            casts.append({
+                "date": f"2024-01-{i:02d}",
+                "week": str(i),
+                "dayweather": ["Sunny", "Cloudy", "Rainy", "Snowy", "Windy", "Foggy", "Thunder"][i-1],
+                "nightweather": ["Cloudy", "Rainy", "Snowy", "Windy", "Foggy", "Thunder", "Sunny"][i-1],
+                "daytemp": str(10 + i),
+                "nighttemp": str(i - 2),
+                "daywind": "North",
+                "nightwind": "South",
+                "daypower": str(i),
+                "nightpower": str(i + 1)
+            })
+        
+        mock_data = {
+            "status": "1",
+            "forecasts": [
+                {
+                    "city": "Beijing",
+                    "province": "Beijing",
+                    "reporttime": "2024-01-01 12:00:00",
+                    "casts": casts
+                }
+            ]
+        }
+        
+        result = parse_weather_data(mock_data)
+        self.assertEqual(result["city"], "Beijing")
+        self.assertEqual(len(result["forecasts"]), 7)
+        
+        # Verify each day's data is correctly parsed
+        for i in range(7):
+            self.assertEqual(result["forecasts"][i]["date"], f"2024-01-{i+1:02d}")
+            self.assertEqual(result["forecasts"][i]["week"], str(i + 1))
+    
+    def test_format_weather_display_7_days(self):
+        """Test that display formatter correctly shows all 7 days"""
+        forecasts = []
+        for i in range(1, 8):
+            forecasts.append({
+                "date": f"2024-01-{i:02d}",
+                "week": str(i),
+                "day_weather": "Sunny",
+                "night_weather": "Cloudy",
+                "day_temp": str(10 + i),
+                "night_temp": str(i),
+                "day_wind": "North",
+                "night_wind": "South",
+                "day_power": "3",
+                "night_power": "2"
+            })
+        
+        mock_data = {
+            "city": "Beijing",
+            "province": "Beijing",
+            "report_time": "2024-01-01 12:00:00",
+            "forecasts": forecasts
+        }
+        
+        display = format_weather_display(mock_data)
+        
+        # Check that all 7 days are present in the output
+        for i in range(1, 8):
+            self.assertIn(f"[Day {i}]", display)
+            self.assertIn(f"2024-01-{i:02d}", display)
+    
     def test_parse_weather_data_invalid(self):
         with self.assertRaises(WeatherAPIError):
             parse_weather_data({})
