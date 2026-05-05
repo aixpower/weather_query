@@ -1,5 +1,7 @@
 # Amap Weather Query System
 
+> 📖 English readers please visit [README.en.md](README.en.md)
+
 基于高德开放平台 API 的天气查询程序，支持命令行和图形用户界面。
 
 [![Python Version](https://img.shields.io/badge/python-3.7%2B-blue.svg)](https://www.python.org/downloads/)
